@@ -1,0 +1,25 @@
+{
+    "int": {
+        "istrugglebar_bg": [40, 40, 40],
+        "istrugglebar_border": [0, 0, 0],
+        "istrugglebar_penaltyamount": 2,
+        "istrugglebar_targetmashes": 10,
+        "istrugglebar_mashkeya": 30,
+        "istrugglebar_mashkeyb": 32,
+        "istrugglebar_maxkeyrepeat": 3,
+
+        "ifapproach_maxcandidates": 8,
+        "ifapproach_maxcooldowns": 16
+    },
+    "float": {
+        "fstrugglebar_timelimit": 30.0,
+        "fstrugglebar_updateinterval": 0.5,
+
+        "fapproach_scaninterval": 10.0,
+        "fapproach_detectionradius": 700.0,
+        "fapproach_npcgreetcooldown": 100.0,
+        "fapproach_globalgreetinterval": 60.0,
+        "fapproach_greetchance": 0.4,
+        "fapproach_greettimeout": 90.0
+    }
+}

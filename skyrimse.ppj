@@ -1,0 +1,47 @@
+<?xml version='1.0'?><!-- Game is either sse, tesv, or fo4 -->
+<PapyrusProject xmlns="PapyrusProject.xsd" 
+    Flags="TESV_Papyrus_Flags.flg" 
+    Game="sse" 
+    Output="Scripts" 
+    Optimize="false" 
+    Release="false" 
+    Final="false">
+	<Imports>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\IWant Widgets NG\Scripts\Source</Import>
+        
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\SexLab Aroused Creatures SE v04.18\Scripts\Source</Import>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\powerofthree's Papyrus Extender\Source\scripts</Import>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\Acheron - Death Alternative\Source\Scripts</Import>
+        <Import>F:\Games\Skyrim-1.6.1170\mods\Devious Devices NG\Source\Scripts</Import>
+        <Import>F:\Games\Skyrim-1.6.1170\mods\Devious Devices for SE-AE-VR\scripts\Source</Import>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\OSL Aroused\Scripts\Source</Import>
+        <!-- This are all dependencies of DD and OSLAroused (sigh!) -->
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\SkyUI-Community-Sources\Source\scripts</Import>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\MyChanges - OStim Standalone Sources\Scripts\Source</Import>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\MyChanges - SLIF Sources\Scripts\Source</Import>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\XP32 Maximum Skeleton Special Extended\scripts\source</Import>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\MyChanges - FNIS Sources\Source\scripts</Import>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\MyChanges - VRIK source scripts\Scripts\Source</Import>
+
+		<Import>D:\Games\Skyrim-1.6.1170-shattered\mods\Skyrim Script Extender (SKSE64)\Scripts\Source</Import>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\CKScripts\Scripts\Source</Import>
+		<Import>D:\Games\Skyrim-1.6.1170-shattered\mods\Sources-RaceMenu\scripts\source</Import>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\PapyrusUtil SE - Modders Scripting Utility Functions\Source\Scripts</Import>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\ConsoleUtil Extended\Source\Scripts</Import>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\JContainers SE\scripts\source</Import>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\SkyUI SDK\Scripts\Source</Import>
+		<Import>D:\Games\Skyrim-1.6.1170-shattered\mods\SexLab Framework PPLUS\Source\Scripts</Import>
+		<!-- SexLab PPLUS dependencies -->
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\SexLabFrameworkAE_v166b\scripts\Source</Import>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\Sources-AnimSpeedSE\scripts\source</Import>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\Sources-Lovense\Source\Scripts</Import>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\Mfg Fix NG\source\scripts</Import>
+		<!-- -->
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\Shattered - A Post-Apocalyptic Skyrim SE AE VR\Source\Scripts</Import>
+		<Import>D:\Games\Skyrim-1.6.1170-shattered\mods\Factions SE AE VR - Shattered Addon\Source\Scripts</Import>	
+		<Import>.\Source\Scripts</Import>
+	</Imports>
+    <Folders>
+        <Folder>.\Source\Scripts</Folder>
+    </Folders>
+</PapyrusProject>
