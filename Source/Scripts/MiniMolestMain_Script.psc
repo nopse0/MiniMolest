@@ -13,22 +13,37 @@ Package         Property MiniMolestDoNothingPackage Auto
 
 MiniMolestStruggle_Script Property MiniMolestStruggle Auto
 MiniMolestConfig_Script Property MiniMolestConfig Auto
+MiniMolestStats_Script Property MiniMolestStats Auto
 
-Int LastConfigGeneration = 0
 Float ForceGreetTimeout = 0.0
 Float StruggleTimeout = 0.0
+
+; Fame-driven tuning (step 5), loaded from config in ReadConfig:
+;   approach accept chance = clamp(ApproachBaseChance + FameApproachBonus * norm/100)
+;   outcome struggle chance = clamp(OutcomeBaseChance + FameOutcomeBonus * norm/100)
+Float ApproachBaseChance = 0.25
+Float FameApproachBonus = 0.75
+Float OutcomeBaseChance = 0.25
+Float FameOutcomeBonus = 0.75
 
 String MiniMolestState = ""
 
 Bool Initialized = false
 Bool ConfigChanged = false
 Bool IsBusy = false
+Bool SexSceneActive = false
 
 Function ReadConfig()
 	Debug.Trace("[MiniMolest Main] ReadConfig")
 	ForceGreetTimeout = MiniMolestConfig.fApproach_greetTimeout
 	StruggleTimeout = MiniMolestConfig.fStruggleBar_timeLimit
-	Debug.Trace("[MiniMolest Main] ReadConfig: ForceGreetTimeout=" + ForceGreetTimeout + ", StruggleTimeout=" + StruggleTimeout)
+	ApproachBaseChance = MiniMolestConfig.fMain_approachBaseChance
+	FameApproachBonus = MiniMolestConfig.fMain_fameApproachBonus
+	OutcomeBaseChance = MiniMolestConfig.fMain_outcomeBaseChance
+	FameOutcomeBonus = MiniMolestConfig.fMain_fameOutcomeBonus
+	Debug.Trace("[MiniMolest Main] ReadConfig: ForceGreetTimeout=" + ForceGreetTimeout + ", StruggleTimeout=" + StruggleTimeout\
+	 + ", ApproachBaseChance=" + ApproachBaseChance + ", FameApproachBonus=" + FameApproachBonus\
+	 + ", OutcomeBaseChance=" + OutcomeBaseChance + ", FameOutcomeBonus=" + FameOutcomeBonus)
 EndFunction
 
 Event OnInit()
@@ -83,6 +98,9 @@ Event OnUpdate()
 			EndBusy()
 		elseif MiniMolestState == "Struggle"   ; Struggle Timeout
 			Debug.Trace("[MiniMolest Main] Struggle timeout")
+			if MiniMolestStats != None
+				MiniMolestStats.RecordStruggleLoss()
+			endif
 			MiniMolestStruggle.ResolveMinigame(false)
 			Debug.Trace("[MiniMolest Main] Timeout, stopping BackHug, actor = " + HarassingNPC.GetActorReference())
 			StopBackHug(HarassingNPC.GetActorReference())
@@ -91,6 +109,8 @@ Event OnUpdate()
 			SexLabThread thread = SexLabFramework_Script.StartScene(positions, "!Aggressive", PlayerRef, asHook = "MiniMolestSLHook")
 			if thread == None
 				EndBusy()
+			else
+				SexSceneActive = true
 			endif			
 		endif
 	endif
@@ -98,6 +118,14 @@ EndEvent
 
 Bool Function GreetActor(Actor aTarget)
 	if (!Initialized || IsBusy)
+		return false
+	endif
+
+	; Fame gate (step 5): low sexual fame -> Main often declines to engage at all.
+	; A rejection returns false before touching any state, so the scanner sets no cooldown.
+	Float acceptChance = GetApproachAcceptChance()
+	if Utility.RandomFloat(0.0, 1.0) >= acceptChance
+		Debug.Trace("[MiniMolest Main] Declined approach (fame gate), chance=" + acceptChance)
 		return false
 	endif
 
@@ -109,7 +137,7 @@ Bool Function GreetActor(Actor aTarget)
 
 	MiniMolestState = "ForceGreet"
 	MiniMolestForceGreetType.SetValue(1)
-	MiniMolestForceGreetOutcome.SetValue(1)
+	MiniMolestForceGreetOutcome.SetValue(RollForceGreetOutcome())
 
 	Debug.Trace("[MiniMolest Main] Force-greeting " + aTarget.GetDisplayName())
 	HarassingNPC.ForceRefTo(aTarget as ObjectReference)
@@ -120,6 +148,42 @@ Bool Function GreetActor(Actor aTarget)
 	return true
 EndFunction
 
+; --- Fame-driven rolls (step 5), both driven by normalized sexual fame [0,100] ---
+
+Float Function ClampChance(Float aValue)
+	if aValue < 0.0
+		return 0.0
+	endif
+	if aValue > 1.0
+		return 1.0
+	endif
+	return aValue
+EndFunction
+
+; Chance that Main accepts an approach the scanner proposes, given current fame.
+Float Function GetApproachAcceptChance()
+	Float bonus = 0.0
+	if MiniMolestStats != None
+		bonus = FameApproachBonus * (MiniMolestStats.GetFameNormalized() / 100.0)
+	endif
+	return ClampChance(ApproachBaseChance + bonus)
+EndFunction
+
+; Rolls the force-greet outcome: 1 = NPC forces a struggle, 0 = NPC lets it go.
+Int Function RollForceGreetOutcome()
+	Float bonus = 0.0
+	if MiniMolestStats != None
+		bonus = FameOutcomeBonus * (MiniMolestStats.GetFameNormalized() / 100.0)
+	endif
+	Float chance = ClampChance(OutcomeBaseChance + bonus)
+	Int result = 0
+	if Utility.RandomFloat(0.0, 1.0) < chance
+		result = 1
+	endif
+	Debug.Trace("[MiniMolest Main] Force-greet outcome roll: chance=" + chance + " -> outcome=" + result)
+	return result
+EndFunction
+
 Function RegisterModEventHooks()
 	Debug.Trace("[MiniMolest Main] Registering mod event hooks.")
 	RegisterForModEvent("HookAnimationEnd_MiniMolestSLHook", "OnSexLabAnimationEnd")
@@ -127,6 +191,12 @@ EndFunction
 
 Event OnSexLabAnimationEnd(int tid, bool HasPlayer)
 	Debug.Trace("[MiniMolest Main] HookAnimationEnd_MiniMolestSLHook: tid=" + tid + ", hasPlayer=" + HasPlayer)
+	if SexSceneActive
+		if MiniMolestStats != None
+			MiniMolestStats.RecordSex(false)
+		endif
+		SexSceneActive = false
+	endif
 	EndBusy()
 EndEvent
 
@@ -144,6 +214,10 @@ Function OnDialogueEnd(Actor speaker)
 EndFunction
 
 Function OnBreakFree()
+	if MiniMolestState == "Struggle" && MiniMolestStats != None
+		; only real-flow wins count, not stage-999 / TestMinigame runs
+		MiniMolestStats.RecordStruggleWin()
+	endif
 	StopBackHug(HarassingNPC.GetActorReference())
 	MiniMolestState = ""
 	MiniMolestForceGreetType.SetValue(0)

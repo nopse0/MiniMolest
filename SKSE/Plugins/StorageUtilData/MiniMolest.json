@@ -6,10 +6,12 @@
         "istrugglebar_targetmashes": 10,
         "istrugglebar_mashkeya": 30,
         "istrugglebar_mashkeyb": 32,
-        "istrugglebar_maxkeyrepeat": 3,
+        "istrugglebar_maxkeyrepeat": 1,
 
-        "ifapproach_maxcandidates": 8,
-        "ifapproach_maxcooldowns": 16
+        "iapproach_maxcandidates": 8,
+        "iapproach_maxcooldowns": 16,
+
+        "istats_maxbuckets": 90
     },
     "float": {
         "fstrugglebar_timelimit": 30.0,
@@ -17,9 +19,25 @@
 
         "fapproach_scaninterval": 10.0,
         "fapproach_detectionradius": 700.0,
-        "fapproach_npcgreetcooldown": 100.0,
+        "fapproach_npcgreetcooldown": 120.0,
         "fapproach_globalgreetinterval": 60.0,
         "fapproach_greetchance": 0.4,
-        "fapproach_greettimeout": 90.0
+        "fapproach_greettimeout": 90.0,
+
+        "fmain_approachbasechance": 0.25,
+        "fmain_fameapproachbonus": 0.75,
+        "fmain_outcomebasechance": 0.25,
+        "fmain_fameoutcomebonus": 0.75,
+
+        "fstats_buckethours": 24.0,
+        "fstats_sexwindowhours": 336.0,
+        "fstats_strugglewindowhours": 168.0,
+        "fstats_decayhalflifehours": 72.0,
+
+        "fstats_fameweightsex": 1.0,
+        "fstats_fameweightloss": 0.5,
+        "fstats_famenormalizer": 10.0,
+        "fstats_famelossnormalizer": 10.0,
+        "fstats_famesaturation": 0.5
     }
 }
