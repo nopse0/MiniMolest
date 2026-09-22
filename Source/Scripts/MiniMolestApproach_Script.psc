@@ -161,6 +161,9 @@ Bool Function CanGreet(Actor aTarget)
 EndFunction
 
 Function ScanNearbyActors()
+	; Test
+	;SlaveTatsNG.find_molester_group(1, 0, 1000)
+
 	if PlayerRef == None || !PlayerRef.IsAIEnabled() || PlayerRef.IsInCombat()
 		return
 	endif

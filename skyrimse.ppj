@@ -7,6 +7,8 @@
     Release="false" 
     Final="false">
 	<Imports>
+        <Import>D:\Games\Skyrim-1.6.1170-shattered\overwrite\Scripts\Source</Import>
+     
         <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\IWant Widgets NG\Scripts\Source</Import>
         
         <Import>D:\Games\Skyrim-1.6.1170-shattered\mods\SexLab Aroused Creatures SE v04.18\Scripts\Source</Import>

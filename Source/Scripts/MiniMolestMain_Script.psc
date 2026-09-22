@@ -139,7 +139,7 @@ Bool Function GreetActor(Actor aTarget)
 	MiniMolestForceGreetType.SetValue(1)
 	MiniMolestForceGreetOutcome.SetValue(RollForceGreetOutcome())
 
-	Debug.Trace("[MiniMolest Main] Force-greeting " + aTarget.GetDisplayName())
+	Debug.Trace("[MiniMolest Main] Force-greeting " + aTarget.GetDisplayName() + ", MiniMolestForceGreetOutcome.GetValue = " + MiniMolestForceGreetOutcome.GetValue())
 	HarassingNPC.ForceRefTo(aTarget as ObjectReference)
 	Actor HarrassingActor = HarassingNPC.GetActorReference()
 	HarrassingActor.EvaluatePackage()
@@ -202,15 +202,19 @@ EndEvent
 
 Function OnDialogueEnd(Actor speaker)
 	UnregisterForUpdate()  ; remove ForceGreetTimeout
+	Int outcome = MiniMolestForceGreetOutcome.GetValueInt()
+	Debug.Trace("[MiniMolest Main] OnDialogueEnd: outcome = " + outcome)
 	MiniMolestForceGreetType.SetValue(0)
 	MiniMolestForceGreetOutcome.SetValue(0)
 
-	Debug.Trace("[MiniMolest Main] Dialogue ended with " + speaker.GetDisplayName() + ". Starting struggle minigame...")
-	MiniMolestState = "Struggle"
-	StartBackHug(speaker)
-	MiniMolestStruggle.StartBreakFree(false)
+	if outcome == 1
+		Debug.Trace("[MiniMolest Main] Dialogue ended with " + speaker.GetDisplayName() + ". Starting struggle minigame...")
+		MiniMolestState = "Struggle"
+		StartBackHug(speaker)
+		MiniMolestStruggle.StartBreakFree(false)
 	
-	RegisterForSingleUpdate(StruggleTimeout)
+		RegisterForSingleUpdate(StruggleTimeout)
+	endif
 EndFunction
 
 Function OnBreakFree()
