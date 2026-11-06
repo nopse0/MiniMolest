@@ -29,7 +29,7 @@ Event StartScene(string eventName, string hookPostfix, float numArg, Form sender
         if (thread != None)
             MiniUtil_Script.SetSceneThreadID(SceneHandle, thread.GetThreadID())
         else
-            MiniUtil_Script.SetSceneError(SceneHandle)
+            MiniUtil_Script.SetSceneThreadID(SceneHandle, -1)
         endif
     else
          Debug.Trace("[MiniMolest Main] GetSceneParameters failed!")

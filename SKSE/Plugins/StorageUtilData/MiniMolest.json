@@ -17,8 +17,8 @@
         "fstrugglebar_timelimit": 30.0,
         "fstrugglebar_updateinterval": 0.5,
 
-        "fapproach_scaninterval": 10.0,
-        "fapproach_detectionradius": 700.0,
+        "fapproach_scaninterval": 2.0,
+        "fapproach_detectionradius": 4000.0,
         "fapproach_npcgreetcooldown": 120.0,
         "fapproach_globalgreetinterval": 60.0,
         "fapproach_greetchance": 0.4,
